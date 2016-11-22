@@ -44,7 +44,7 @@
 // the package. Equally important, traversal of other PDF data structures can be implemented
 // in other packages as needed.
 //
-package pdf // import "rsc.io/pdf"
+package pdf
 
 // BUG(rsc): The package is incomplete, although it has been used successfully on some
 // large real-world PDF files.
@@ -680,6 +680,7 @@ func (v Value) Keys() []string {
 	for k := range x {
 		keys = append(keys, string(k))
 	}
+	//fmt.Printf("> %+v\n", keys)
 	sort.Strings(keys)
 	return keys
 }
@@ -839,6 +840,9 @@ func applyFilter(rd io.Reader, name string, param Value) io.Reader {
 		case 12:
 			return &pngUpReader{r: zr, hist: make([]byte, 1+columns), tmp: make([]byte, 1+columns)}
 		}
+	case "DCTDecode":
+		fmt.Printf("DCTDecode")
+		return nil
 	}
 }
 

@@ -480,6 +480,7 @@ func (b *buffer) readDict() object {
 		if tok == nil || tok == keyword(">>") {
 			break
 		}
+		//fmt.Printf("tok=%+v\n", tok)
 		n, ok := tok.(name)
 		if !ok {
 			b.errorf("unexpected non-name key %T(%v) parsing dictionary", tok, tok)
