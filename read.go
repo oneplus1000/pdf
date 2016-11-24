@@ -841,8 +841,7 @@ func applyFilter(rd io.Reader, name string, param Value) io.Reader {
 			return &pngUpReader{r: zr, hist: make([]byte, 1+columns), tmp: make([]byte, 1+columns)}
 		}
 	case "DCTDecode":
-		fmt.Printf("DCTDecode")
-		return nil
+		return rd
 	}
 }
 
