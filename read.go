@@ -556,6 +556,11 @@ func objfmt(x interface{}) string {
 	}
 }
 
+//ID returns ref id and gen
+func (v Value) ID() (uint32, uint16) {
+	return v.ptr.id, v.ptr.gen
+}
+
 // Bool returns v's boolean value.
 // If v.Kind() != Bool, Bool returns false.
 func (v Value) Bool() bool {
