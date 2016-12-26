@@ -561,6 +561,12 @@ func (v Value) ID() (uint32, uint16) {
 	return v.ptr.id, v.ptr.gen
 }
 
+//RefTo ref to
+func (v Value) RefTo() (uint32, uint16) {
+	ptr := v.r.xref[v.ptr.id].ptr
+	return ptr.id, ptr.gen
+}
+
 // Bool returns v's boolean value.
 // If v.Kind() != Bool, Bool returns false.
 func (v Value) Bool() bool {
@@ -821,6 +827,20 @@ func (v Value) Reader() io.ReadCloser {
 		}
 	}
 
+	return ioutil.NopCloser(rd)
+}
+
+//RawReader returns the data contained in the stream without any Filter
+func (v Value) RawReader() io.ReadCloser {
+	x, ok := v.data.(stream)
+	if !ok {
+		return &errorReadCloser{fmt.Errorf("stream not present")}
+	}
+	var rd io.Reader
+	rd = io.NewSectionReader(v.r.f, x.offset, v.Key("Length").Int64())
+	if v.r.key != nil {
+		rd = decryptStream(v.r.key, v.r.useAES, x.ptr, rd)
+	}
 	return ioutil.NopCloser(rd)
 }
 
