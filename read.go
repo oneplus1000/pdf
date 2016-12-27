@@ -498,6 +498,22 @@ func (v Value) String() string {
 	return objfmt(v.data)
 }
 
+//StringType return type of string
+func (v Value) StringType() int {
+	switch x := v.data.(type) {
+	default:
+		return 0
+	case string:
+		if isPDFDocEncoded(x) {
+			return 1
+		}
+		if isUTF16(x) {
+			return 2
+		}
+		return 3
+	}
+}
+
 func objfmt(x interface{}) string {
 	switch x := x.(type) {
 	default:
